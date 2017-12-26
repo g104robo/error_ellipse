@@ -25,26 +25,35 @@ sigmaf_offset=(20.0,5.0)
 
 #固有値、固有ベクトルの計算
 sigmap_eigenval, sigmap_eigenvec = np.linalg.eig(sigmap)
-sigmap_rad = np.arctan2(sigmap_eigenvec[0][0], sigmap_eigenvec[1][0])
+sigmap_rad = np.arctan2(sigmap_eigenvec[1][0], sigmap_eigenvec[0][0])
 sigmaf_eigenval, sigmaf_eigenvec = np.linalg.eig(sigmaf)
-sigmaf_rad = np.arctan2(sigmaf_eigenvec[0][0], sigmaf_eigenvec[1][0])
+sigmaf_rad = np.arctan2(sigmaf_eigenvec[1][0], sigmaf_eigenvec[0][0])
 # sigmas_eigenval, sigmas_eigenvec = np.linalg.eig(sigmas)
-# sigmas_rad = np.arctan2(sigmas_eigenvec[0][0], sigmas_eigenvec[1][0])
+# sigmas_rad = np.arctan2(sigmas_eigenvec[1][0], sigmas_eigenvec[0][0])
+
+#print(sigmaf_rad)
+# print(sigmap_eigenval)
+# print(sigmap_eigenvec)
+# print(sigmaf_eigenval)
+# print(sigmaf_eigenvec)
 
 #楕円の生成
-sigmap_ell = patches.Ellipse(xy=sigmap_offset, width=sigmap_eigenval[0], height=sigmap_eigenval[1], angle=math.degrees(sigmap_rad), fc='b', ec='y', fill=False, label='sigma_p' )
-sigmaf_ell = patches.Ellipse(xy=sigmaf_offset, width=sigmaf_eigenval[0], height=sigmaf_eigenval[1], angle=math.degrees(sigmaf_rad), fc='b', ec='b', fill=False, label='sigma_f')
-#sigmas_ell = patches.Ellipse(xy=sigmas_offset, width=1000.0, height=2.0, angle=0.0, fc='b', ec='g', fill=False, label='sigma_s')
+# sigmap_ell = patches.Ellipse(xy=sigmap_offset, width=2*sigmap_eigenval[0], height=2*sigmap_eigenval[1], angle=math.degrees(sigmap_rad), fc='b', ec='y', fill=False, label='sigma_p' )
+# sigmaf_ell = patches.Ellipse(xy=sigmaf_offset, width=2*sigmaf_eigenval[0], height=2*sigmaf_eigenval[1], angle=math.degrees(sigmaf_rad), fc='b', ec='b', fill=False, label='sigma_f')
+
+sigmap_ell = patches.Ellipse(xy=sigmap_offset, width=2*math.sqrt(sigmap_eigenval[0]), height=2*math.sqrt(sigmap_eigenval[1]), angle=math.degrees(sigmap_rad), fc='b', ec='y', fill=False, label='sigma_p' )
+sigmaf_ell = patches.Ellipse(xy=sigmaf_offset, width=2*math.sqrt(sigmaf_eigenval[0]), height=2*math.sqrt(sigmaf_eigenval[1]), angle=math.degrees(sigmaf_rad), fc='b', ec='b', fill=False, label='sigma_f')
+# sigmas_ell = patches.Ellipse(xy=sigmas_offset, width=1000.0, height=2.0, angle=0.0, fc='b', ec='g', fill=False, label='sigma_s')
 
 ax.add_patch(sigmap_ell)
 ax.add_patch(sigmaf_ell)
-#ax.add_patch(sigmas_ell)
+# ax.add_patch(sigmas_ell)
 
 plt.axis('scaled')
 ax.set_aspect('equal')
 ax.grid(which='major', color='k', linestyle='--', linewidth=1)
 
-# ax.set_xlim(18, 27)
+# ax.set_xlim(18, 28)
 # ax.set_ylim(0, 26)
 ax.yaxis.set_major_locator(ticker.MultipleLocator(1.0))           # 1.0ごと
 plt.xlabel('x[cm]')
